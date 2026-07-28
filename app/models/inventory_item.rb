@@ -1,5 +1,6 @@
 class InventoryItem < ApplicationRecord
   belongs_to :shop
+  has_many :inventory_fraction_prices, dependent: :destroy
 
   VALID_CATEGORIES = %w[cereal poshomill bags].freeze
 
