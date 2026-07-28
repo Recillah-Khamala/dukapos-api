@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_28_202728) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_28_205200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -21,6 +21,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_28_202728) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shop_id"], name: "index_customers_on_shop_id"
+  end
+
+  create_table "inventory_fraction_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "inventory_item_id", null: false
+    t.string "label", null: false
+    t.decimal "fraction", precision: 10, scale: 4, null: false
+    t.decimal "price", precision: 10, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_item_id"], name: "index_inventory_fraction_prices_on_inventory_item_id"
   end
 
   create_table "inventory_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -49,5 +59,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_28_202728) do
   end
 
   add_foreign_key "customers", "shops"
+  add_foreign_key "inventory_fraction_prices", "inventory_items"
   add_foreign_key "inventory_items", "shops"
 end
