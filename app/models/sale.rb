@@ -1,5 +1,6 @@
 class Sale < ApplicationRecord
   belongs_to :shop
+  has_many :sale_items, dependent: :destroy
 
   VALID_PAYMENT_METHODS = %w[cash mpesa credit].freeze
 
