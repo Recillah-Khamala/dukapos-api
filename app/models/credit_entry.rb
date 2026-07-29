@@ -1,0 +1,2 @@
+class CreditEntry < ApplicationRecord
+end
