@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_29_043059) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_29_065857) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -50,6 +50,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_29_043059) do
     t.index ["shop_id"], name: "index_inventory_items_on_shop_id"
   end
 
+  create_table "sale_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "sale_id", null: false
+    t.uuid "inventory_item_id"
+    t.string "name", null: false
+    t.decimal "qty", precision: 10, scale: 2, null: false
+    t.decimal "unit_price", precision: 10, scale: 2, null: false
+    t.string "item_type", null: false
+    t.string "icon"
+    t.boolean "is_service", default: false, null: false
+    t.string "unit_type"
+    t.string "fraction_label"
+    t.string "unit_label"
+    t.string "variant_label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_item_id"], name: "index_sale_items_on_inventory_item_id"
+    t.index ["sale_id"], name: "index_sale_items_on_sale_id"
+  end
+
   create_table "sales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "shop_id", null: false
     t.decimal "total", precision: 10, scale: 2, null: false
@@ -71,5 +90,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_29_043059) do
   add_foreign_key "customers", "shops"
   add_foreign_key "inventory_fraction_prices", "inventory_items"
   add_foreign_key "inventory_items", "shops"
+  add_foreign_key "sale_items", "inventory_items"
+  add_foreign_key "sale_items", "sales"
   add_foreign_key "sales", "shops"
 end
