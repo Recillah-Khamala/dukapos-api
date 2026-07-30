@@ -1,0 +1,2 @@
+class CreditEntryItem < ApplicationRecord
+end
