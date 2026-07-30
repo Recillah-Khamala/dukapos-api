@@ -1,6 +1,7 @@
 class CreditEntry < ApplicationRecord
   belongs_to :shop
   belongs_to :customer
+  has_many :credit_entry_items, dependent: :destroy
 
   VALID_STATUSES = %w[active paid].freeze
 
