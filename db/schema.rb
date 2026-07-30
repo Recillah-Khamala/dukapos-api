@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_29_110156) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_29_124035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -26,6 +26,23 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_29_110156) do
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_credit_entries_on_customer_id"
     t.index ["shop_id"], name: "index_credit_entries_on_shop_id"
+  end
+
+  create_table "credit_entry_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "credit_entry_id", null: false
+    t.uuid "inventory_item_id"
+    t.string "name", null: false
+    t.decimal "qty", precision: 10, scale: 2, null: false
+    t.decimal "unit_price", precision: 10, scale: 2, null: false
+    t.decimal "total", precision: 10, scale: 2, null: false
+    t.string "category"
+    t.decimal "amount_paid", precision: 10, scale: 2, default: "0.0"
+    t.decimal "balance", precision: 10, scale: 2
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["credit_entry_id"], name: "index_credit_entry_items_on_credit_entry_id"
+    t.index ["inventory_item_id"], name: "index_credit_entry_items_on_inventory_item_id"
   end
 
   create_table "customers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -102,6 +119,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_29_110156) do
 
   add_foreign_key "credit_entries", "customers"
   add_foreign_key "credit_entries", "shops"
+  add_foreign_key "credit_entry_items", "credit_entries"
+  add_foreign_key "credit_entry_items", "inventory_items"
   add_foreign_key "customers", "shops"
   add_foreign_key "inventory_fraction_prices", "inventory_items"
   add_foreign_key "inventory_items", "shops"
