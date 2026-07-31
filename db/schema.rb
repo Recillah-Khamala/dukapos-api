@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_07_29_124035) do
+ActiveRecord::Schema[8.0].define(version: 2026_07_31_080000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -37,7 +37,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_07_29_124035) do
     t.decimal "total", precision: 10, scale: 2, null: false
     t.string "category"
     t.decimal "amount_paid", precision: 10, scale: 2, default: "0.0"
-    t.decimal "balance", precision: 10, scale: 2
+    t.decimal "balance", precision: 10, scale: 2, default: "0.0"
     t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
