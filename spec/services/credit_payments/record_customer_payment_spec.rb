@@ -25,8 +25,8 @@ RSpec.describe CreditPayments::RecordCustomerPayment do
 
   describe ".call" do
     it "pays the oldest active entry first, in full, before touching a newer one" do
-      older = create_entry(customer: customer, created_at: 3.days.ago, total: 100, items_totals: [100])
-      newer = create_entry(customer: customer, created_at: 1.day.ago, total: 200, items_totals: [200])
+      older = create_entry(customer: customer, created_at: 3.days.ago, total: 100, items_totals: [ 100 ])
+      newer = create_entry(customer: customer, created_at: 1.day.ago, total: 200, items_totals: [ 200 ])
 
       result = described_class.call(customer: customer, amount: 150)
 
@@ -38,7 +38,7 @@ RSpec.describe CreditPayments::RecordCustomerPayment do
     end
 
     it "splits payment proportionally across an entry's items" do
-      entry = create_entry(customer: customer, created_at: 1.day.ago, total: 1000, items_totals: [700, 300])
+      entry = create_entry(customer: customer, created_at: 1.day.ago, total: 1000, items_totals: [ 700, 300 ])
 
       described_class.call(customer: customer, amount: 500)
 
@@ -48,7 +48,7 @@ RSpec.describe CreditPayments::RecordCustomerPayment do
     end
 
     it "reports excess when payment exceeds all active debt" do
-      create_entry(customer: customer, created_at: 1.day.ago, total: 100, items_totals: [100])
+      create_entry(customer: customer, created_at: 1.day.ago, total: 100, items_totals: [ 100 ])
 
       result = described_class.call(customer: customer, amount: 250)
 
@@ -57,9 +57,9 @@ RSpec.describe CreditPayments::RecordCustomerPayment do
     end
 
     it "does not touch entries already marked paid" do
-      paid = create_entry(customer: customer, created_at: 2.days.ago, total: 100, items_totals: [100])
+      paid = create_entry(customer: customer, created_at: 2.days.ago, total: 100, items_totals: [ 100 ])
       paid.update!(status: "paid", balance: 0, amount_paid: 100)
-      active = create_entry(customer: customer, created_at: 1.day.ago, total: 100, items_totals: [100])
+      active = create_entry(customer: customer, created_at: 1.day.ago, total: 100, items_totals: [ 100 ])
 
       described_class.call(customer: customer, amount: 100)
 

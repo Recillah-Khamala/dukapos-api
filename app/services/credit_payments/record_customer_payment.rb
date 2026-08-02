@@ -28,14 +28,14 @@ module CreditPayments
         active_entries.each do |entry|
           break if remaining <= 0
 
-          pay_for_entry = [remaining, entry.balance].min
+          pay_for_entry = [ remaining, entry.balance ].min
           next if pay_for_entry <= 0
 
           items = entry.credit_entry_items.order(:created_at)
           CreditEntryItemAllocator.call(items: items, pay_amount: pay_for_entry).each(&:save!)
 
           entry.amount_paid += pay_for_entry
-          entry.balance = [entry.balance - pay_for_entry, 0].max
+          entry.balance = [ entry.balance - pay_for_entry, 0 ].max
           entry.status = entry.balance <= 0.01 ? "paid" : "active"
           entry.save!
 

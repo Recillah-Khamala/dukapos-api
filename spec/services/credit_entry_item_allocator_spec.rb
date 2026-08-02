@@ -14,8 +14,8 @@ RSpec.describe CreditEntryItemAllocator do
 
   describe ".call" do
     it "splits a payment proportionally across two items' balances" do
-      items = [build_item(total: 700, balance: 700, amount_paid: 0),
-               build_item(total: 300, balance: 300, amount_paid: 0)]
+      items = [ build_item(total: 700, balance: 700, amount_paid: 0),
+               build_item(total: 300, balance: 300, amount_paid: 0) ]
 
       result = described_class.call(items: items, pay_amount: 500)
 
@@ -27,9 +27,9 @@ RSpec.describe CreditEntryItemAllocator do
     end
 
     it "has the last outstanding item absorb the rounding remainder" do
-      items = [build_item(total: 100, balance: 33.33, amount_paid: 0),
+      items = [ build_item(total: 100, balance: 33.33, amount_paid: 0),
                build_item(total: 100, balance: 33.33, amount_paid: 0),
-               build_item(total: 100, balance: 33.34, amount_paid: 0)]
+               build_item(total: 100, balance: 33.34, amount_paid: 0) ]
 
       result = described_class.call(items: items, pay_amount: 100)
 
@@ -38,9 +38,9 @@ RSpec.describe CreditEntryItemAllocator do
     end
 
     it "skips items that are already fully paid" do
-      items = [build_item(total: 100, balance: 0, amount_paid: 100),
+      items = [ build_item(total: 100, balance: 0, amount_paid: 100),
                build_item(total: 200, balance: 200, amount_paid: 0),
-               build_item(total: 50, balance: 50, amount_paid: 0)]
+               build_item(total: 50, balance: 50, amount_paid: 0) ]
 
       result = described_class.call(items: items, pay_amount: 125)
 
@@ -49,7 +49,7 @@ RSpec.describe CreditEntryItemAllocator do
     end
 
     it "is a no-op when nothing is outstanding" do
-      items = [build_item(total: 100, balance: 0, amount_paid: 100)]
+      items = [ build_item(total: 100, balance: 0, amount_paid: 100) ]
 
       result = described_class.call(items: items, pay_amount: 50)
 
@@ -58,7 +58,7 @@ RSpec.describe CreditEntryItemAllocator do
     end
 
     it "backfills nil balance/amount_paid from total before allocating" do
-      items = [build_item(total: 100, balance: nil, amount_paid: nil)]
+      items = [ build_item(total: 100, balance: nil, amount_paid: nil) ]
 
       result = described_class.call(items: items, pay_amount: 40)
 

@@ -38,13 +38,13 @@ class CreditEntryItemAllocator
         if idx == last_outstanding_index
           remaining
         else
-          [pay_amount * share, item.balance].min
+          [ pay_amount * share, item.balance ].min
         end
-      item_payment = [[item_payment, 0].max, item.balance].min
+      item_payment = [ [ item_payment, 0 ].max, item.balance ].min
 
       remaining -= item_payment
       item.amount_paid += item_payment
-      item.balance = [item.balance - item_payment, 0].max
+      item.balance = [ item.balance - item_payment, 0 ].max
     end
 
     items
