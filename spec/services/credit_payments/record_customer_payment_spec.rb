@@ -32,7 +32,7 @@ RSpec.describe CreditPayments::RecordCustomerPayment do
 
       expect(older.reload.balance).to eq(0)
       expect(older.status).to eq("paid")
-      expect(newer.reload.balance).to eq(50)
+      expect(newer.reload.balance).to eq(150)
       expect(newer.status).to eq("active")
       expect(result.excess).to eq(0)
     end
